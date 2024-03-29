@@ -1,4 +1,4 @@
-  version: "3"
+  version: "3.5"
 
   services:
     full:
@@ -48,7 +48,7 @@
     vault:   
       image: hashicorp/vault
       environment:
-        VAULT_DEV_ROOT_TOKEN_ID: "root"  # Development mode root token
+        VAULT_DEV_ROOT_TOKEN_ID: "${VAULT_ROOT_TOKEN}"  # Development mode root token
         VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200" 
       ports:
       - 8200:8200
@@ -58,6 +58,8 @@
         options:
           fluentd-async-connect: 'true'
           fluentd-address: '172.23.0.3:24224'
+      volumes:
+      - ./vault-data:/vault/data  # Mount a host directory for persistent data
       networks:
         - admin
 
@@ -297,21 +299,41 @@
 
     # Logging and admin
     admin:
-      internal: true
-
-    logging:
-      internal: true
-
-    postgres:
-      name: postgres
-      internal: true
-
-    secure_overlay_network:
       driver: overlay
       driver_opts:
         encrypted: true
         scope: engine
-      ipam:
-        driver: default
-        config:
-          - subnet: 10.0.0.0/24
+      internal: true
+
+    logging:
+      driver: overlay
+      driver_opts:
+        encrypted: true
+        scope: engine
+      internal: true
+
+    postgres:
+      name: postgres
+      driver: overlay
+      driver_opts:
+        encrypted: true
+        scope: engine
+      internal: true
+    
+    vault:
+      name: vault
+      driver: overlay
+      driver_opts:
+        encrypted: true
+        scope: engine
+      internal: true
+
+    # secure_overlay_network:
+    #   driver: overlay
+    #   driver_opts:
+    #     encrypted: true
+    #     scope: engine
+    #   ipam:
+    #     driver: default
+    #     config:
+    #       - subnet: 10.0.0.0/24
