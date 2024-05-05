@@ -1,0 +1,18 @@
+[ req ]
+default_bits        = 4096
+distinguished_name  = req_distinguished_name
+x509_extensions     = v3_ca
+
+[ req_distinguished_name ]
+countryName         = US
+stateOrProvinceName = California
+localityName        = San Francisco
+organizationName    = My Company Inc
+commonName          = MY_CA
+commonName_max      = 64
+commonName_default  = My CA
+
+[ v3_ca ]
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer
+basicConstraints    = CA:true

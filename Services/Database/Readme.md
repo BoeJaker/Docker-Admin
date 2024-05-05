@@ -1,4 +1,15 @@
+# Postgres Database
 
+## Dependents:
+    - guacamole
+
+## Functions:
+ - Secret Storage
+ - Centralised Persistance
+ - Logging
+ - Omni Channel Data Analysis
+
+# Usage
 
 To connect to the metasploit database 
 
